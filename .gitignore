@@ -1,0 +1,78 @@
+# ================================
+# PYTHON / Django (backend)
+# ================================
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+venv/
+.env
+.env.*
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+/staticfiles/
+media/
+*.py[cod]
+
+# Pytest / coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# ================================
+# Node / Next.js (frontend)
+# ================================
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js build outputs
+.next/
+out/
+build/
+
+# Local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
+
+# ================================
+# Docker
+# ================================
+
+# Containers, volumes, networks
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Logs
+*.log
+
+# ================================
+# Misc
+# ================================
+
+# VS Code workspace storage
+*.code-workspace
