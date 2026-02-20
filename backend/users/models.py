@@ -27,6 +27,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "telegram_id"
     REQUIRED_FIELDS = []
-
+    def get_rank_badge(self):
+        if self.elo < 900:
+            return "Bronze"
+        elif self.elo < 1100:
+            return "Silver"
+        elif self.elo < 1300:
+            return "Gold"
+        elif self.elo < 1600:
+            return "Platinum"
+        else:
+            return "Elite"
     def __str__(self):
         return self.username or str(self.telegram_id)
