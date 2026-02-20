@@ -1,7 +1,8 @@
 import random
 from matches.models import Match, MatchPlayer, Vote
 from users.models import User
-from backend.config.settings import REDIS_URL
+from django.conf import settings
+REDIS_URL = settings.REDIS_URL
 import redis
 import json
 

@@ -31,4 +31,6 @@ class MatchAPITestCase(TestCase):
         self.client.post("/api/matches/join_lobby/", {"telegram_id": 789012, "username": "Target"}, format="json")
         vote_resp = self.client.post(f"/api/matches/{match_id}/submit_vote/", {"voter_id": 123456, "target_id": 789012})
         self.assertEqual(vote_resp.status_code, 200)
-        self.assertTrue(Vote.objects.filter(voter_id=123456, target_id=789012).exists())
+        voter = User.objects.get(telegram_id=123456)
+        target = User.objects.get(telegram_id=789012)
+        self.assertTrue(Vote.objects.filter(voter=voter, target=target).exists())
