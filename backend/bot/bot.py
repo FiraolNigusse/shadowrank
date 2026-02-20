@@ -42,3 +42,18 @@ async def join_match(message: types.Message):
     MatchPlayer.objects.get_or_create(match=match, user=user)
 
     await message.answer(f"You joined Match {match.id}. Waiting for other players…")
+    from matchmaking.game_engine import GameEngine
+
+@dp.message_handler(commands=["vote"])
+async def vote_handler(message: types.Message):
+    args = message.text.split()
+    if len(args) != 2:
+        await message.answer("Usage: /vote <target_telegram_id>")
+        return
+    target_id = int(args[1])
+    voter_id = message.from_user.id
+    # Assume user is in latest match
+    match = Match.objects.filter(players__user__telegram_id=voter_id, status="ongoing").last()
+    engine = GameEngine(match.id)
+    engine.submit_vote(voter_id, target_id)
+    await message.answer(f"You voted for {target_id}.")
