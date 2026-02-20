@@ -27,3 +27,18 @@ async def start_handler(message: types.Message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
+from users.services import get_or_create_user_from_telegram
+from matches.models import Match, MatchPlayer
+from matches.serializers import MatchSerializer
+
+@dp.message_handler(commands=["join"])
+async def join_match(message: types.Message):
+    telegram_id = message.from_user.id
+    username = message.from_user.username
+    user = get_or_create_user_from_telegram(telegram_id, username)
+
+    # Get or create waiting match
+    match, created = Match.objects.get_or_create(status="waiting")
+    MatchPlayer.objects.get_or_create(match=match, user=user)
+
+    await message.answer(f"You joined Match {match.id}. Waiting for other players…")
