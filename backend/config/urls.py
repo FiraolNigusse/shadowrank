@@ -7,5 +7,6 @@ router.register(r"matches", MatchViewSet, basename="match")
 
 urlpatterns = [
     path("api/", include(router.urls)),
+    path("api/", include("matches.urls")),
     path("api/users/", include("users.urls")),
 ]

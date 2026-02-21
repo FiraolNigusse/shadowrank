@@ -10,6 +10,7 @@ class Match(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="waiting")
     finished_at = models.DateTimeField(null=True, blank=True)
+    winning_team = models.CharField(max_length=20, null=True, blank=True)  # "Town", "Mafia", etc.
     
     def __str__(self):
         return f"Match {self.id} ({self.status})"
@@ -18,7 +19,9 @@ class MatchPlayer(models.Model):
     match = models.ForeignKey(Match, related_name="players", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="matches", on_delete=models.CASCADE)
     role = models.CharField(max_length=50, blank=True, null=True)  # e.g., Mafia, Detective
+    team = models.CharField(max_length=20, null=True, blank=True)  # "Town" or "Mafia"
     alive = models.BooleanField(default=True)
+
 
     def __str__(self):
         return f"{self.user} in {self.match}"
