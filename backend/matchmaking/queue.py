@@ -11,7 +11,11 @@ PLAYERS_PER_MATCH = 4
 
 
 def add_player_to_queue(user):
+    current_queue = r.lrange(QUEUE_KEY, 0, -1)
+    if str(user.telegram_id).encode() in current_queue:
+        return False
     r.rpush(QUEUE_KEY, user.telegram_id)
+    return True
 
 
 def get_queue_size():

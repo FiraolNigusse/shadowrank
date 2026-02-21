@@ -84,8 +84,11 @@ async def vote_handler(message: types.Message):
         return
 
     engine = GameEngine(match.id)
-    engine.submit_vote(voter_id, target_id)
-    await message.answer(f"You voted for {target_id}.")
+    try:
+        engine.submit_vote(voter_id, target_id)
+        await message.answer("Vote registered successfully.")
+    except Exception as e:
+        await message.answer(f"Vote rejected: {str(e)}")
 
 
 async def on_startup():

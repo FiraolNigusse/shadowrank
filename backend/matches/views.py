@@ -23,9 +23,13 @@ class MatchViewSet(viewsets.ModelViewSet):
         username = request.data.get("username")
 
         user = get_or_create_user_from_telegram(telegram_id, username)
+        # Prevent duplicate queue entries
+        if MatchPlayer.objects.filter(user=user, match__status="ongoing").exists():
+            return Response({"message": "You are already in an active match"})
 
-        add_player_to_queue(user)
-
+        added = add_player_to_queue(user)
+        if not added:
+            return Response({"message": "You are already in ranked queue"})
         if get_queue_size() >= 4:
             telegram_ids = pop_players_from_queue(4)
             match = create_balanced_match(telegram_ids)
