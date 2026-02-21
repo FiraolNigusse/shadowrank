@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Orbitron, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./components/ClientLayout";
+import Nav from "./components/Nav";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const orbitron = Orbitron({
   subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
 });
-
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -26,11 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${inter.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} ${orbitron.variable} ${geistMono.variable} antialiased min-h-screen bg-[var(--bg-base)]`}
       >
         <ClientLayout>
+          <Nav />
           {children}
         </ClientLayout>
       </body>
