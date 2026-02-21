@@ -21,32 +21,44 @@ export default function Leaderboard() {
   }, [type]);
 
   return (
-    <main className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
+    <main className="min-h-screen p-10 relative overflow-hidden">
+      <div className="absolute w-96 h-96 bg-purple-700 opacity-20 blur-3xl rounded-full -z-10 animate-pulse -top-20 right-0"></div>
+      <div className="absolute w-96 h-96 bg-blue-700 opacity-10 blur-3xl rounded-full -z-10 animate-pulse bottom-0 left-0" style={{ animationDelay: '1.5s' }}></div>
 
-      <div className="mb-4">
+      <h1 className="text-3xl font-bold mb-6">Leaderboard</h1>
+
+
+      <div className="mb-6">
         <button
           onClick={() => setType("global")}
-          className="mr-2 px-4 py-2 bg-blue-600 rounded"
+          className="mr-3 px-4 py-2 bg-blue-600 rounded-lg font-semibold"
         >
           Global
         </button>
         <button
           onClick={() => setType("weekly")}
-          className="px-4 py-2 bg-purple-600 rounded"
+          className="px-4 py-2 bg-purple-600 rounded-lg font-semibold"
         >
           Weekly
         </button>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         {users.map((user, index) => (
           <div
             key={user.id}
-            className="flex justify-between bg-gray-800 p-3 rounded-xl"
+            className="glass-card p-5 flex justify-between items-center transition-all duration-300 hover:scale-[1.02]"
           >
-            <span>#{index + 1} {user.username}</span>
-            <span>ELO: {user.elo}</span>
+            <span className="font-semibold">
+              #{index + 1} {user.username}
+            </span>
+
+            <div className="text-right">
+              <p className="font-bold">ELO: {user.elo}</p>
+              <p className="text-sm opacity-70">
+                {user.wins}W / {user.losses}L
+              </p>
+            </div>
           </div>
         ))}
       </div>

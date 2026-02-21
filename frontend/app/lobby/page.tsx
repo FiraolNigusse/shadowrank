@@ -18,8 +18,8 @@ export default function Lobby() {
   // Dummy queued players (replace with real API fetch later)
   useEffect(() => {
     setPlayers([
-       { id: "1", username: "Player1", avatarUrl: "https://i.pravatar.cc/150?img=1", rank: "Bronze" },
-       { id: "2", username: "Player2", avatarUrl: "https://i.pravatar.cc/150?img=2", rank: "Silver" },
+      { id: "1", username: "Player1", avatarUrl: "https://i.pravatar.cc/150?img=1", rank: "Bronze" },
+      { id: "2", username: "Player2", avatarUrl: "https://i.pravatar.cc/150?img=2", rank: "Silver" },
     ]);
   }, []);
 
@@ -31,19 +31,27 @@ export default function Lobby() {
   }, [ready, countdown]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-900 to-black flex flex-col items-center justify-center text-white p-4">
-      <h1 className="text-4xl font-bold mb-4">Lobby</h1>
-      <div className="flex gap-4 mb-4">
+    <main className="min-h-screen flex flex-col items-center justify-center p-8 relative overflow-hidden">
+      <div className="absolute w-96 h-96 bg-purple-700 opacity-20 blur-3xl rounded-full -z-10 animate-pulse top-0 left-1/2 -translate-x-1/2"></div>
+
+      <h1 className="text-4xl font-bold mb-6">Lobby</h1>
+
+
+      <div className="flex gap-6 mb-6">
         {players.map(player => (
           <motion.div
             key={player.id}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center bg-gray-900 p-2 rounded-xl shadow-lg w-24"
+            className="flex flex-col items-center glass-card p-4 w-28 transition-all duration-300 hover:scale-105"
           >
-            <img src={player.avatarUrl} alt="avatar" className="w-16 h-16 rounded-full mb-1" />
+            <img
+              src={player.avatarUrl}
+              alt="avatar"
+              className="w-16 h-16 rounded-full mb-2"
+            />
             <span className="font-semibold">{player.username}</span>
-            <span className="text-xs">{player.rank}</span>
+            <span className="text-xs opacity-70">{player.rank}</span>
           </motion.div>
         ))}
       </div>
@@ -51,14 +59,16 @@ export default function Lobby() {
       <motion.button
         onClick={() => setReady(!ready)}
         whileTap={{ scale: 0.95 }}
-        className={`px-6 py-2 rounded-xl font-bold ${
-          ready ? "bg-green-500" : "bg-blue-500"
-        }`}
+        className="esports-button px-8 py-3 rounded-xl font-semibold text-white"
       >
         {ready ? "Ready" : "Click to Ready"}
       </motion.button>
 
-      {ready && <p className="mt-4 text-xl">Game starts in: {countdown}s</p>}
+      {ready && (
+        <p className="mt-6 text-xl font-medium">
+          Game starts in: {countdown}s
+        </p>
+      )}
     </main>
   );
 }
