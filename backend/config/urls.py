@@ -8,6 +8,6 @@ router.register(r"matches", MatchViewSet, basename="match")
 
 urlpatterns = [
     path("api/", include(router.urls)),
-    path("api/leaderboard/global/", GlobalLeaderboardView.as_view()),
-    path("api/leaderboard/weekly/", WeeklyLeaderboardView.as_view()),
+    path("api/users/leaderboard/global/", GlobalLeaderboardView.as_view()),
+    path("api/users/leaderboard/weekly/", WeeklyLeaderboardView.as_view()),
 ]
