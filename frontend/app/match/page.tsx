@@ -26,138 +26,95 @@ export default function Match() {
   const isNight = phase === "night";
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 relative overflow-hidden">
-      <div
-        className={`orb w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors duration-1000 ${
-          isNight ? "orb-blue" : "bg-orange-600/30"
-        }`}
-      />
+    <main>
+      <div className="mb-10">
+        <span
+          className={`inline-block px-3 py-1 rounded-lg text-sm font-semibold mb-4 ${
+            isNight ? "bg-indigo-500/20 text-indigo-300" : "bg-amber-500/20 text-amber-300"
+          }`}
+        >
+          {isNight ? "🌙 Night" : "☀️ Day"}
+        </span>
+        <h2 className="text-3xl font-bold mb-2">
+          {isNight ? "Night Phase" : "Day Phase"}
+        </h2>
+        <p className="text-gray-400">
+          {isNight ? "Mafia chooses a target" : "Town votes to eliminate"}
+        </p>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-2xl w-full flex flex-col items-center"
-      >
-        {/* Phase header */}
-        <div className="text-center mb-8">
-          <h1
-            className={`font-display text-4xl md:text-6xl font-bold tracking-tight mb-3 transition-colors duration-500 ${
-              isNight ? "text-sky-300" : "text-amber-300"
-            }`}
-            style={{ textShadow: isNight ? "0 0 40px rgba(56, 189, 248, 0.4)" : "0 0 40px rgba(251, 191, 36, 0.4)" }}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        {players.map((player, i) => (
+          <motion.button
+            key={player.id}
+            onClick={() =>
+              isNight && player.alive && setSelectedTarget(selectedTarget === player.id ? null : player.id)
+            }
+            disabled={!player.alive}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.05 }}
+            whileHover={player.alive ? { scale: 1.02 } : {}}
+            whileTap={player.alive ? { scale: 0.98 } : {}}
+            className={`card p-5 text-center ${
+              player.alive ? "" : "opacity-50 grayscale cursor-not-allowed"
+            } ${selectedTarget === player.id ? "ring-2 ring-purple-500" : ""}`}
           >
-            {phase.toUpperCase()} PHASE
-          </h1>
-          <p className="text-zinc-300 text-base font-medium">
-            {isNight ? "Mafia chooses a target" : "Town votes to eliminate"}
-          </p>
-        </div>
+            <img
+              src={player.avatarUrl}
+              alt={player.username}
+              className="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-white/10"
+            />
+            <p className="font-semibold text-sm">{player.username}</p>
+            {player.alive && (
+              <span className="text-xs text-green-400 mt-1 inline-flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                Alive
+              </span>
+            )}
+          </motion.button>
+        ))}
+      </div>
 
-        {/* Target selection */}
-        <div className="flex flex-wrap justify-center gap-6 mb-10">
-          {players.map((player, i) => (
-            <motion.button
-              key={player.id}
-              onClick={() => isNight && player.alive && setSelectedTarget(selectedTarget === player.id ? null : player.id)}
-              disabled={!player.alive}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={player.alive ? { scale: 1.08, y: -4 } : {}}
-              whileTap={player.alive ? { scale: 0.98 } : {}}
-              className={`flex flex-col items-center glass-card p-6 w-32 rounded-2xl transition-all duration-300 cursor-pointer ${
-                player.alive ? "" : "opacity-50 grayscale cursor-not-allowed"
-              } ${
-                selectedTarget === player.id
-                  ? "ring-4 ring-violet-400 shadow-xl shadow-violet-500/20 border-violet-400/50"
-                  : ""
-              }`}
-            >
-              <div className="relative mb-3">
-                <img
-                  src={player.avatarUrl}
-                  alt={player.username}
-                  className={`w-20 h-20 rounded-full object-cover ring-4 ${
-                    selectedTarget === player.id ? "ring-violet-400" : "ring-white/10"
-                  } ${!player.alive ? "ring-red-500/20" : ""}`}
-                />
-                {selectedTarget === player.id && (
-                  <div className="absolute inset-0 rounded-full bg-violet-500/20" />
-                )}
-              </div>
-              <span
-                className={`font-bold text-base ${
-                  player.alive ? "text-zinc-100" : "text-zinc-500 line-through"
+      <div className="mb-10">
+        <h3 className="text-lg font-semibold mb-4">Vote</h3>
+        <div className="space-y-2">
+          {players
+            .filter((p) => p.alive)
+            .map((player) => (
+              <motion.button
+                key={player.id}
+                onClick={() => setSelectedVote(player.id)}
+                whileHover={{ x: 4 }}
+                className={`secondary-btn w-full text-left flex items-center justify-between ${
+                  selectedVote === player.id ? "bg-purple-500/20 border-purple-500/50" : ""
                 }`}
               >
                 {player.username}
-              </span>
-              {player.alive && (
-                <span className="text-xs text-emerald-400 mt-0.5 font-medium">Alive</span>
-              )}
-            </motion.button>
-          ))}
+                {selectedVote === player.id && (
+                  <span className="text-purple-400 font-bold">✓</span>
+                )}
+              </motion.button>
+            ))}
         </div>
+      </div>
 
-        {/* Vote panel */}
-        <div className="flex flex-col items-center w-full max-w-sm">
-          <h2 className="font-display text-2xl font-bold text-zinc-200 mb-8 tracking-tight">
-            VOTE PANEL
-          </h2>
-
-          <div className="flex flex-col gap-3 w-full">
-            {players
-              .filter((p) => p.alive)
-              .map((player) => (
-                <motion.button
-                  key={player.id}
-                  onClick={() => setSelectedVote(player.id)}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`esports-button-vote px-6 py-4 rounded-xl font-bold text-left w-full flex items-center justify-between transition-all ${
-                    selectedVote === player.id
-                      ? "esports-button-vote-active"
-                      : ""
-                  }`}
-                >
-                  <span className="text-zinc-100">{player.username}</span>
-                  {selectedVote === player.id && (
-                    <span className="text-violet-300 text-sm font-medium">Selected</span>
-                  )}
-                </motion.button>
-              ))}
-          </div>
-
-          {selectedVote && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-5 text-base text-zinc-300"
-            >
-              Voted:{" "}
-              <span className="font-bold text-violet-300">
-                {players.find((p) => p.id === selectedVote)?.username}
-              </span>
-            </motion.p>
-          )}
+      <div className="card p-4">
+        <div className="flex justify-between text-sm mb-2">
+          <span className="text-gray-400">Alive</span>
+          <span className="font-semibold text-green-400">
+            {aliveCount} / {players.length}
+          </span>
         </div>
-
-        {/* Alive count */}
-        <div className="mt-12 w-full max-w-xs">
-          <div className="progress-bar h-3 rounded-full">
-            <motion.div
-              className="progress-bar-fill progress-bar-fill-success"
-              initial={{ width: 0 }}
-              animate={{ width: `${alivePercent}%` }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </div>
-          <p className="mt-3 text-sm font-semibold text-zinc-300 text-center">
-            {aliveCount} / {players.length} alive
-          </p>
+        <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${alivePercent}%` }}
+            transition={{ duration: 0.5 }}
+          />
         </div>
-      </motion.div>
+      </div>
     </main>
   );
 }

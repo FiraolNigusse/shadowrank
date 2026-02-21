@@ -5,49 +5,66 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-8 relative overflow-hidden px-4">
-      {/* Ambient orbs */}
-      <div className="orb orb-purple w-[400px] h-[400px] -top-40 -left-40" />
-      <div className="orb orb-blue w-[350px] h-[350px] bottom-1/4 right-1/4" style={{ animationDelay: "-3s" }} />
-      <div className="orb orb-cyan w-[280px] h-[280px] top-1/2 right-0 opacity-25" style={{ animationDelay: "-5s" }} />
-
+    <main className="min-h-[70vh] flex flex-col items-center justify-center text-center">
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col items-center gap-10 text-center"
+        transition={{ duration: 0.5 }}
+        className="space-y-8"
       >
-        <h1 className="font-display text-7xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500">
-          SHADOWRANK
-        </h1>
-        <p className="text-zinc-400 text-lg max-w-md -mt-4">
-          Competitive Mafia. Prove your reads. Climb the ranks.
-        </p>
+        <div>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-400 mb-6"
+          >
+            Competitive Mafia
+          </motion.span>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4">
+            SHADOW<span className="text-purple-500">RANK</span>
+          </h1>
+          <p className="text-gray-400 text-lg max-w-md mx-auto leading-relaxed">
+            Prove your reads. Outsmart the town. Climb the ranks.
+          </p>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-4"
+          transition={{ delay: 0.3 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link href="/lobby">
             <motion.span
-              className="esports-button px-10 py-4 rounded-xl font-semibold text-center block"
+              className="primary-btn inline-flex items-center gap-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               Enter Lobby
+              <span className="text-purple-200">→</span>
             </motion.span>
           </Link>
           <Link href="/match">
             <motion.span
-              className="esports-button-ghost px-10 py-4 rounded-xl font-semibold text-center block"
+              className="secondary-btn inline-flex items-center gap-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              Enter Match
+              Quick Match
             </motion.span>
           </Link>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="flex gap-8 justify-center text-sm text-gray-500 pt-8"
+        >
+          <span>🏆 Ranked</span>
+          <span>⚡ Fast games</span>
+          <span>🎭 Social deduction</span>
         </motion.div>
       </motion.div>
     </main>
