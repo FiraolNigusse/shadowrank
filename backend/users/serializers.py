@@ -7,7 +7,7 @@ class LeaderboardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["telegram_id", "username", "elo", "rank_badge"]
+        fields = ["telegram_id", "username", "elo", "rank_badge", "wins", "losses"]
 
     def get_rank_badge(self, obj):
         return obj.get_rank_badge()
