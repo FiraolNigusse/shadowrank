@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,3 +141,8 @@ CACHES = {
     }
 }
 AUTH_USER_MODEL = "users.User"
+if "test" in sys.argv:
+    # Use in-memory DB for speed
+    DATABASES["default"]["NAME"] = ":memory:"
+    # Optional: Use fake Redis for testing
+    REDIS_URL = "redis://localhost:6379/1"  # or override in pytest with fakeredis
