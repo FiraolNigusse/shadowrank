@@ -65,3 +65,31 @@ class MatchViewSet(viewsets.ModelViewSet):
             target=target
         )
         return Response(VoteSerializer(vote).data)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import MatchPlayer
+from .serializers import MatchHistorySerializer
+
+
+class UserMatchHistoryView(APIView):
+    def get(self, request):
+        telegram_id = request.query_params.get("telegram_id")
+        user = None
+
+        if telegram_id:
+            try:
+                user = User.objects.get(telegram_id=telegram_id)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        elif request.user.is_authenticated:
+            user = request.user
+        else:
+            # Mocking for now: if no user is authenticated or specified, use the first user
+            user = User.objects.first()
+            if not user:
+                return Response({"error": "No user found to fetch history"}, status=status.HTTP_404_NOT_FOUND)
+
+        history = MatchPlayer.objects.filter(user=user).order_by("-match__created_at")
+        serializer = MatchHistorySerializer(history, many=True)
+        return Response(serializer.data)
