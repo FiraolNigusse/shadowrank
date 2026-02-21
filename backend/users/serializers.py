@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import User
 
 
-class LeaderboardSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     rank_badge = serializers.SerializerMethodField()
 
     class Meta:

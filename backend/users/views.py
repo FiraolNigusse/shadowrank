@@ -20,3 +20,13 @@ class WeeklyLeaderboardView(APIView):
         users = User.objects.filter(last_match__gte=week_ago).order_by("-elo")[:50]
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
+
+
+class CurrentUserView(APIView):
+    def get(self, request):
+        # Mocking for now - return the first user or 404
+        user = User.objects.first()
+        if not user:
+            return Response({"error": "No users found"}, status=404)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
